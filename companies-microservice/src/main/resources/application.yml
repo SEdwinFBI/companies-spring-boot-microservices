@@ -1,0 +1,45 @@
+spring:
+  application:
+      name: companies-microservice
+  profiles:
+    default: prod
+  config:
+    import: "optional:configserver:http://localhost:7777"
+
+  datasource: #por spring cloud
+    url: ${spring.datasource.url} #por config server sping cloud, que trae configuracin desde github
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    hikari:
+      connection-timeout: ${spring.datasource.hikari.connection-timeout}
+      maximum-pool-size: ${spring.datasource.hikari.maximum-pool-size}
+
+server:
+  port: 0
+  servlet:
+    context-path: /companies-microservice/api/v1
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              spi: trace
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v1/api-docs
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}" #para registrarlo en eureka
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #para registrarlo en eureka desde el otro servicio

@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: report-microservice
+  profiles:
+    default: prod
+  config:
+    import: "optional:configserver:http://localhost:7777"
+
+server:
+  port: 7070
+  servlet:
+    context-path: /report-microservice
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v1/api-docs
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}" #para registrarlo en eureka
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #para registrarlo en eureka desde el otro servicio
